@@ -118,7 +118,7 @@ const UserForm = () => {
 
         {/* Form Card */}
         <div className="bg-white border border-[#61210F]/10 rounded-2xl shadow-sm overflow-hidden">
-          <form onSubmit={handleSubmit} className="p-8">
+          <form onSubmit={handleSubmit} className="p-3.5 md:p-6 lg:p-8 space-y-6">
             <div className="space-y-6">
               
               {/* Basic Information Section */}
@@ -209,10 +209,10 @@ const UserForm = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-end gap-3 pt-8 mt-8 border-t border-[#61210F]/5">
+            <div className="flex items-center justify-end gap-3 pt-2 md:pt-6 mt-2 border-t border-[#61210F]/5">
               <button
                 type="button"
-                className="px-6 py-2.5 cursor-pointer text-sm font-bold text-[#61210F]/60 hover:text-[#61210F] transition-colors"
+                className="px-6 py-2.5 cursor-pointer text-sm hover:underline font-bold text-[#61210F]/60 hover:text-[#61210F] transition-colors"
                 onClick={() => navigate(isEdit ? `/users/${id}` : "/users")}
               >
                 Discard
@@ -220,7 +220,7 @@ const UserForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center cursor-pointer gap-2 px-8 py-2.5 bg-[#EA2B1F] text-white rounded-xl text-sm font-bold shadow-md hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
+                className="flex items-center cursor-pointer gap-2 px-8 py-2.5 bg-[#61210F] text-white rounded-xl text-sm font-bold shadow-md hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
               >
                 {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
                 {isEdit ? "Save Changes" : "Create Account"}

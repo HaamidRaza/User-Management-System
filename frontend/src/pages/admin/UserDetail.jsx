@@ -119,14 +119,14 @@ const UserDetail = () => {
             {canEdit && (
               <Link
                 to={`/users/${id}/edit`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#61210F]/10 rounded-lg text-sm font-bold text-[#61210F] hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 bg-white border border-[#61210F]/10 rounded-lg text-sm font-bold text-[#61210F] hover:bg-gray-50 transition-all shadow-sm"
               >
                 <Edit3 size={16} /> Edit Profile
               </Link>
             )}
             {canToggleStatus && (
               <button
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white transition-all shadow-sm ${user.status === "active" ? "bg-[#EA2B1F] hover:opacity-90" : "bg-green-600 hover:bg-green-700"}`}
+                className={`inline-flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white transition-all shadow-sm ${user.status === "active" ? "bg-[#EA2B1F] hover:opacity-90" : "bg-green-600 hover:bg-green-700"}`}
                 onClick={handleStatusToggle}
               >
                 {user.status === "active" ? (

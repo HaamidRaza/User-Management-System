@@ -114,9 +114,17 @@ const Dashboard = () => {
         <h2 className="text-3xl font-bold text-[#61210F] tracking-tight">
           Welcome back, {user?.name?.split(" ")[0]} {user?.name?.split(" ")[1]}
         </h2>
-        <p className="text-[#61210F]/60 mt-1 text-sm">
-          Everything looks good today. Here is what's happening with your users.
-        </p>
+        {isAdminOrManager ? (
+          <p className="text-[#61210F]/60 mt-1 text-sm">
+            Everything looks good today. Here is what's happening with your
+            users.
+          </p>
+        ) : (
+          <p className="text-[#61210F]/60 mt-1 text-sm">
+            You are logged in as a standard user. Explore your profile and
+            account settings.
+          </p>
+        )}
       </header>
 
       {isAdminOrManager && (
