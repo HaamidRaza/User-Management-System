@@ -177,7 +177,7 @@ const UserForm = () => {
                           name="role"
                           value={form.role}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#F9EDCC]/10 border border-[#61210F]/10 rounded-xl text-sm font-bold text-[#61210F] focus:ring-2 focus:ring-[#EDAE49] outline-none appearance-none"
+                          className="w-full pl-10 pr-4 py-2.5 cursor-pointer bg-[#F9EDCC]/10 border border-[#61210F]/10 rounded-xl text-sm font-bold text-[#61210F] focus:ring-2 focus:ring-[#EDAE49] outline-none appearance-none"
                         >
                           <option value="user">Standard User</option>
                           <option value="manager">Manager</option>
@@ -196,7 +196,7 @@ const UserForm = () => {
                           name="status"
                           value={form.status}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#F9EDCC]/10 border border-[#61210F]/10 rounded-xl text-sm font-bold text-[#61210F] focus:ring-2 focus:ring-[#EDAE49] outline-none appearance-none"
+                          className="w-full pl-10 pr-4 py-2.5 cursor-pointer bg-[#F9EDCC]/10 border border-[#61210F]/10 rounded-xl text-sm font-bold text-[#61210F] focus:ring-2 focus:ring-[#EDAE49] outline-none appearance-none"
                         >
                           <option value="active">Active</option>
                           <option value="inactive">Inactive</option>

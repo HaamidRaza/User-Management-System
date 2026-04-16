@@ -105,7 +105,7 @@ const UserDetail = () => {
         {/* Header Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <button
-            className="flex items-center gap-2 text-sm font-bold text-[#61210F]/60 hover:text-[#61210F] transition-colors group"
+            className="flex items-center cursor-pointer gap-2 text-sm font-bold text-[#61210F]/60 hover:text-[#61210F] transition-colors group"
             onClick={() => navigate("/users")}
           >
             <ArrowLeft

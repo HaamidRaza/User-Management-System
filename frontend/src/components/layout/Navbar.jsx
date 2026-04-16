@@ -108,7 +108,7 @@ const Navbar = () => {
 
         <button
           onClick={handleLogout}
-          className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded border-2 border-[#61210F] text-[#61210F] hover:bg-[#61210F] hover:text-[#F9EDCC] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#EA2B1F]"
+          className="text-xs font-bold cursor-pointer uppercase tracking-widest px-4 py-2 rounded border-2 border-[#61210F] text-[#61210F] hover:bg-[#61210F] hover:text-[#F9EDCC] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#EA2B1F]"
         >
           Logout
         </button>
