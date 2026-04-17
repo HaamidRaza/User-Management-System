@@ -58,6 +58,35 @@ export const getUsers = async (req, res) => {
   }
 };
 
+// @desc    Get users stats
+// @route   GET /api/users/stats
+// @access  Admin, Manager
+export const getUserStats = async (req, res) => {
+  const stats = await User.aggregate([
+    {
+      $facet: {
+        total: [{ $count: "count" }],
+        active: [{ $match: { status: "active" } }, { $count: "count" }],
+        inactive: [{ $match: { status: "inactive" } }, { $count: "count" }],
+        admins: [{ $match: { role: "admin" } }, { $count: "count" }],
+        managers: [{ $match: { role: "manager" } }, { $count: "count" }],
+        users: [{ $match: { role: "user" } }, { $count: "count" }],
+      }
+    }
+  ]);
+
+  const format = (key) => stats[0][key][0]?.count || 0;
+
+  res.json({
+    total: format('total'),
+    active: format('active'),
+    inactive: format('inactive'),
+    admins: format('admins'),
+    managers: format('managers'),
+    users: format('users')
+  });
+};
+
 // @desc    Get single user by ID
 // @route   GET /api/users/:id
 // @access  Admin, Manager (not own-admin), or self

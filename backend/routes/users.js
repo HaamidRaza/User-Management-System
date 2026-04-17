@@ -6,6 +6,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  getUserStats,
 } from "../controllers/userController.js";
 import { protect, authorize, validateObjectId } from "../middleware/auth.js";
 
@@ -49,6 +50,7 @@ const updateUserValidation = [
 
 // GET /api/users — Admin & Manager only
 router.get("/", protect, authorize("admin", "manager"), getUsers);
+router.get("/stats", protect, authorize("admin", "manager"), getUserStats);
 
 // GET /api/users/:id — Admin, Manager, or own profile (handled in controller)
 router.get("/:id", protect, validateObjectId, getUserById);

@@ -1,8 +1,13 @@
-import api from './api';
+import api from "./api";
 
 export const userService = {
   getUsers: async (params = {}) => {
-    const { data } = await api.get('/users', { params });
+    const { data } = await api.get("/users", { params });
+    return data;
+  },
+  
+  getStats: async () => {
+    const { data } = await api.get("/users/stats");
     return data;
   },
 
@@ -12,7 +17,7 @@ export const userService = {
   },
 
   createUser: async (userData) => {
-    const { data } = await api.post('/users', userData);
+    const { data } = await api.post("/users", userData);
     return data.user;
   },
 

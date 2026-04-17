@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useSWR from "swr";
 import {
   Users,
   UserCheck,
@@ -64,43 +65,16 @@ const ActionCard = ({ to, icon: Icon, title, description }) => (
 
 const Dashboard = () => {
   const { user, isAdmin, isAdminOrManager } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!isAdminOrManager) {
-      setLoading(false);
-      return;
-    }
-    const fetchStats = async () => {
-      try {
-        const [all, active, inactive, admins, managers, users] =
-          await Promise.all([
-            userService.getUsers({ limit: 1 }),
-            userService.getUsers({ status: "active", limit: 1 }),
-            userService.getUsers({ status: "inactive", limit: 1 }),
-            isAdmin
-              ? userService.getUsers({ role: "admin", limit: 1 })
-              : Promise.resolve({ pagination: { total: "-" } }),
-            userService.getUsers({ role: "manager", limit: 1 }),
-            userService.getUsers({ role: "user", limit: 1 }),
-          ]);
-        setStats({
-          total: all.pagination.total,
-          active: active.pagination.total,
-          inactive: inactive.pagination.total,
-          admins: admins.pagination.total,
-          managers: managers.pagination.total,
-          users: users.pagination.total,
-        });
-      } catch (_) {
-        setStats(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
-  }, [isAdminOrManager, isAdmin]);
+  // Using SWR to fetch stats instead of local state + useEffect for better caching and revalidation
+  const { data: stats, isLoading } = useSWR(
+    isAdminOrManager ? "/api/users/stats" : null,
+    () => userService.getStats(),
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60000, // Stats only refresh once per minute maximum
+    },
+  );
 
   return (
     <Layout>
@@ -130,71 +104,70 @@ const Dashboard = () => {
       {isAdminOrManager && (
         <section className="mb-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {loading
-              ? Array(6)
-                  .fill(0)
-                  .map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-24 bg-[#61210F]/5 animate-pulse rounded-xl"
-                    />
-                  ))
-              : stats && (
-                  <>
-                    <StatCard
-                      label="Total Users"
-                      value={stats.total}
-                      icon={Users}
-                      color="#61210F"
-                      link="/users"
-                    />
-                    <StatCard
-                      label="Active Now"
-                      value={stats.active}
-                      icon={UserCheck}
-                      color="#059669"
-                      link="/users?status=active"
-                    />
-                    <StatCard
-                      label="Inactive"
-                      value={stats.inactive}
-                      icon={UserMinus}
-                      color="#EA2B1F"
-                      link="/users?status=inactive"
-                    />
-                    {isAdmin && (
-                      <StatCard
-                        label="Admins"
-                        value={stats.admins}
-                        icon={ShieldCheck}
-                        color="#61210F"
-                        link="/users?role=admin"
-                      />
-                    )}
-                    <StatCard
-                      label="Managers"
-                      value={stats.managers}
-                      icon={UserCircle}
-                      color="#EDAE49"
-                      link="/users?role=manager"
-                    />
-                    <StatCard
-                      label="Standard Users"
-                      value={stats.users}
-                      icon={Users}
-                      color="#61210F"
-                      link="/users?role=user"
-                    />
-                  </>
+            {isLoading ? (
+              // Skeleton Loaders
+              Array(isAdmin ? 6 : 5)
+                .fill(0)
+                .map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-28 bg-[#61210F]/5 animate-pulse rounded-xl"
+                  />
+                ))
+            ) : (
+              <>
+                <StatCard
+                  label="Total Users"
+                  value={stats?.total ?? 0}
+                  icon={Users}
+                  color="#61210F"
+                  link="/users"
+                />
+                <StatCard
+                  label="Active Now"
+                  value={stats?.active ?? 0}
+                  icon={UserCheck}
+                  color="#059669"
+                  link="/users?status=active"
+                />
+                <StatCard
+                  label="Inactive"
+                  value={stats.inactive}
+                  icon={UserMinus}
+                  color="#EA2B1F"
+                  link="/users?status=inactive"
+                />
+                {isAdmin && (
+                  <StatCard
+                    label="Admins"
+                    value={stats.admins}
+                    icon={ShieldCheck}
+                    color="#61210F"
+                    link="/users?role=admin"
+                  />
                 )}
+                <StatCard
+                  label="Managers"
+                  value={stats.managers}
+                  icon={UserCircle}
+                  color="#EDAE49"
+                  link="/users?role=manager"
+                />
+                <StatCard
+                  label="Standard Users"
+                  value={stats.users}
+                  icon={Users}
+                  color="#61210F"
+                  link="/users?role=user"
+                />
+              </>
+            )}
           </div>
         </section>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <section
-          className={`${!isAdminOrManager ? "lg:col-span-2" : ""}`}
-        >
+        <section className={`${!isAdminOrManager ? "lg:col-span-2" : ""}`}>
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#61210F]/40 mb-4 flex items-center gap-2">
             Quick Actions
             <div className="h-px flex-1 bg-[#61210F]/10" />
