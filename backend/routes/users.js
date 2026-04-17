@@ -5,7 +5,7 @@ import {
   getUserById,
   createUser,
   updateUser,
-  deleteUser,
+  deactivateUser,
   getUserStats,
 } from "../controllers/userController.js";
 import { protect, authorize, validateObjectId } from "../middleware/auth.js";
@@ -65,9 +65,9 @@ router.put("/:id", protect, validateObjectId, updateUserValidation, updateUser);
 router.delete(
   "/:id",
   protect,
-  authorize("admin"),
+  authorize("admin", "manager"),
   validateObjectId,
-  deleteUser,
+  deactivateUser,
 );
 
 export default router;

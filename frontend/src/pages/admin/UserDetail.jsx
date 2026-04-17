@@ -65,7 +65,7 @@ const UserDetail = () => {
         updated = await userService.updateUser(id, { status: "active" });
         toast.success("User account reactivated");
       } else {
-        await userService.deleteUser(id);
+        await userService.deactivateUser(id);
         toast.success("User account deactivated");
         updated = await userService.getUserById(id);
       }

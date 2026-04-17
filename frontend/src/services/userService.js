@@ -30,7 +30,7 @@ export const userService = {
     return data.user;
   },
 
-  deleteUser: async (id) => {
+  deactivateUser: async (id) => {
     const { data } = await api.delete(`/users/${id}`);
     return data;
   },

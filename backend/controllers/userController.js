@@ -234,7 +234,7 @@ export const updateUser = async (req, res) => {
 // @desc    Soft delete (deactivate) user
 // @route   DELETE /api/users/:id
 // @access  Admin only
-export const deleteUser = async (req, res) => {
+export const deactivateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -246,6 +246,13 @@ export const deleteUser = async (req, res) => {
       return res
         .status(400)
         .json({ message: "You cannot delete your own account" });
+    }
+
+    // Prevent manager from deleting admin accounts
+    if (req.user.role === "manager" && user.role === "admin") {
+      return res
+        .status(403)
+        .json({ message: "Managers cannot deactivate admin accounts" });
     }
 
     // Soft delete: deactivate instead of removing from DB

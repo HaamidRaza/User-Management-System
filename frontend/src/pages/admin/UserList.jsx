@@ -76,7 +76,7 @@ const UserList = () => {
     if (!window.confirm(isDeactivating ? "Deactivate user?" : "Activate user?"))
       return;
     try {
-      if (isDeactivating) await userService.deleteUser(id);
+      if (isDeactivating) await userService.deactivateUser(id);
       else await userService.updateUser(id, { status: "active" });
       toast.success(`User ${isDeactivating ? "deactivated" : "activated"}`);
       mutate();
@@ -357,7 +357,7 @@ const ActionButtons = ({
         <Edit3 size={18} />
       </Link>
     )}
-    {isAdminOrManager && user.role !== "admin" && (
+    {isAdminOrManager && (
       <button
         onClick={() => onToggle(user._id, user.status)}
         className={`p-2 rounded-lg transition-all cursor-pointer ${user.status === "active" ? "text-[#EA2B1F] hover:bg-[#EA2B1F]/10" : "text-green-600 hover:bg-green-50"}`}
