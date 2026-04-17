@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 const UserForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isManager } = useAuth();
   const isEdit = Boolean(id);
 
   const [form, setForm] = useState({
@@ -36,6 +36,11 @@ const UserForm = () => {
     const loadUser = async () => {
       try {
         const user = await userService.getUserById(id);
+        if (isManager && user.role === "admin") {
+          toast.error("Managers cannot edit admin users");
+          navigate("/users");
+          return;
+        }
         setForm({
           name: user.name,
           email: user.email,
@@ -51,7 +56,7 @@ const UserForm = () => {
       }
     };
     loadUser();
-  }, [id, isEdit, navigate]);
+  }, [id, isEdit, navigate, isManager]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
